@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     getNewsList(){
-      this.$http.get('api/getnewslist').then( result => {
+      this.$http.get('http://www.lovegf.cn:8899/api/getnewslist').then( result => {
         if(result.body.status === 0) {
           this.newsList = result.body.message
           console.log(result.body);

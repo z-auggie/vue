@@ -6,7 +6,9 @@ import search from './components/tabbar/SearchContainer.vue'
 import shopcar from './components/tabbar/ShopcarContainer.vue'
 import NewsList from './components/news/NewsList.vue'
 import NewsInfo from './components/news/NewsInfo.vue'
-// 创建路由
+import PhotoList from './components/photo/PhotoList.vue'
+import PhotoInfo from './components/photo/PhotoInfo.vue'
+import GoodsList from './components/goods/GoodsList.vue'
 const router = new VueRouter({
   routes: [
     {path: '/', redirect: '/home'},
@@ -15,7 +17,10 @@ const router = new VueRouter({
     {path: '/search', component: search},
     {path: '/shopcar', component: shopcar},
     {path: '/home/newslist', component: NewsList},
-    {path: '/home/newsinfo/:id', component: NewsInfo}
+    {path: '/home/newsinfo/:id', component: NewsInfo},
+    {path: '/home/photolist', component: PhotoList},
+    {path: '/home/photoinfo/:id', component: PhotoInfo},
+    {path: '/home/goodslist', component: GoodsList}
   ],
   // 路由链接被选中高亮
   linkActiveClass: 'mui-active'

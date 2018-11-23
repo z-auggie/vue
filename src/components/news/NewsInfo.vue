@@ -2,7 +2,7 @@
   <div class="newsinfo-caontainer">
     <h2 class="title">{{ newInfo.title }}</h2>
     <p class="subtitle">
-      <span>发表时间：{{ newInfo.add_time }}</span>
+      <span>发表时间：{{ newInfo.add_time | dateFormat}}</span>
       <span>点击： {{ newInfo.click }}次</span>
     </p>
 
@@ -29,9 +29,9 @@ export default {
   },
   methods: {
     getNewsInfo() {
-      this.$http.get("api/getnew/" + this.id).then(result => {
+      this.$http.get("http://www.lovegf.cn:8899/api/getnew/" + this.id).then(result => {
         if (result.body.status === 0) {
-          this.newInfo = result.body.message;
+          this.newInfo = result.body.message[0]
         }
       });
     }
