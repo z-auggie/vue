@@ -4,6 +4,7 @@
       <div id="slider" class="mui-slider">
         <div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
           <div class="mui-scroll">
+            <!-- id为0的分类默认高亮，避免其他分类也都高亮 -->
             <a :class="['mui-control-item', item.id === 0 ? 'mui-active' : '' ]" v-for="item in title" :key="item.id" @tap="getPhotoList(item.id)">
               {{ item.title }}
             </a>
@@ -14,6 +15,7 @@
       <!-- 图片列表 -->
       <ul class="photo-list">
         <router-link :to="'/home/photoinfo/' + item.id" v-for="item in list" :key="item.id" tag="li">
+        <!-- mintUI懒加载 -->
           <img v-lazy="item.img_url">
           <div class="info">
             <h1 class="info-title">{{ item.title }}</h1>
@@ -27,7 +29,8 @@
 
 
 <script>
-import mui from "../../lib/mui/js/mui.min.js";
+// mui的scroll组件的js部分
+import mui from "../../lib/mui/js/mui.min.js"
 export default {
   data: () => ({
     title: [],
@@ -40,23 +43,26 @@ export default {
   },
   created() {
     this.getTitle();
-    this.getPhotoList(0); //默认请求全部的图片李彪
+    this.getPhotoList(0); //默认请求全部的图片列表
   },
   methods: {
     getTitle() {
       this.$http
-        .get("http://www.lovegf.cn:8899/api/getimgcategory")
+        .get("http://localhost:5000/api/getimgcategory")
         .then(result => {
+          console.log(result)
           if (result.body.status === 0) {
             this.title = result.body.message;
             this.title.unshift({ id: 0, title: "全部" });
           }
         });
     },
+    // 根据id获取不同的分类下的图片列表
     getPhotoList(id) {
       this.$http
-        .get("http://www.lovegf.cn:8899/api/getimages/" + id)
+        .get("http://localhost:5000/api/getimages/" + id)
         .then(result => {
+          console.log(result)
           if (result.body.status === 0) {
             this.list = result.body.message;
           }
@@ -85,6 +91,7 @@ export default {
         height: 300px;
         vertical-align: middle;
       }
+      // 懒加载的加载中样式
       img[lazy="loading"] {
         width: 40px;
         height: 300px;

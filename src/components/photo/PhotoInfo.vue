@@ -22,7 +22,8 @@ import comment from "../subcomponents/Comment.vue";
 export default {
   data: () => ({
     mageInfo: [],
-    slide: []
+    //这是vue-preview的关键数据
+    slide: [] 
   }),
   created() {
     this.getInfo();
@@ -32,21 +33,24 @@ export default {
     comment
   },
   methods: {
+    // 获取图片信息
     getInfo() {
       this.$http
-        .get("http://www.lovegf.cn:8899/api/getimageInfo/" + this.$route.params.id)
+        .get("http://localhost:5000/api/getimageInfo/" + this.$route.params.id)
         .then(result => {
-          console.log(result)
           if (result.body.status === 0) {
-            this.mageInfo = result.body.message[0];
+            // this.mageInfo = result.body.message[0] //http://www.lovegf.cn:8899 用这个接口
+            this.mageInfo = result.body.message //http://localhost:5000 用这个接口
           }
         });
     },
+    // 获取缩略图
     getHumimg() {
       this.$http
-        .get("http://www.lovegf.cn:8899/api/getthumimages/" + this.$route.params.id)
+        .get("http://localhost:5000/api/getthumimages/" + this.$route.params.id)
         .then(result => {
           let {status, message} = result.body
+          // 声明变量接收vue-preview所需要的参数src、msrc、w、h
           let newImg = {}
           if (status === 0) {
             for(var i = 0; i < message.length; i++) {
@@ -54,7 +58,9 @@ export default {
               newImg.msrc = message[i].src
               newImg.w = 200
               newImg.h = 300
+              // 将添加的属性push到vue-preview的slide中
               this.slide.push(newImg)
+              // 清空，用于下次循环后添加
               newImg = {}
             }
           }
@@ -64,7 +70,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .photoinfo-container {
   padding: 0 5px;
   .title {
@@ -81,8 +87,20 @@ export default {
   .content {
     font-size: 12px;
   }
-  #img-box {
+  div.my-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 10px;
+      justify-content: space-between;
       text-align: center;
+      figure {
+        margin: 0;
+        width: 30%;
+        img {
+          width: 100%;
+          height: 120px;
+        }
+      }
   }
 }
 </style>

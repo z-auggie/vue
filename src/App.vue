@@ -9,7 +9,7 @@
 
       <!-- 底部 -->
       <nav class="mui-bar mui-bar-tab">
-        <!-- router-link路有链接 -->
+        <!-- router-link路由链接 -->
         <router-link class="mui-tab-item-zyl" to="/home">
           <span class="mui-icon mui-icon-home"></span>
           <span class="mui-tab-label">首页</span>
@@ -20,7 +20,7 @@
         </router-link>
         <router-link class="mui-tab-item-zyl" to="/shopcar">
           <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-            <span class="mui-badge">0</span>
+            <span class="mui-badge" id="badge">0</span>
           </span>
           <span class="mui-tab-label">购物车</span>
         </router-link>

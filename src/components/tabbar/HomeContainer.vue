@@ -1,11 +1,7 @@
 <template>
   <div>
     <!-- 轮播图 -->
-    <mt-swipe :auto="2000">
-      <mt-swipe-item v-for="items in LoopList" :key="items.url">
-        <img :src='items.img'>
-      </mt-swipe-item>
-    </mt-swipe>
+    <swipe :LoopList="LoopList"></swipe>
     <!-- 导航 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3"><router-link to="/home/newslist">
@@ -32,6 +28,7 @@
 
 <script>
 import { Toast } from "mint-ui"
+import swipe from "../subcomponents/Lunbo.vue"
 export default {
   data: () => ({
     LoopList: []
@@ -41,6 +38,7 @@ export default {
   },
   methods: {
     getLoopPic() {
+      // 这个接口挂了
       this.$http.get("http://localhost:5000/api/getlunbo").then(result => {
         if (result.body.status === 0) {
           this.LoopList = result.body.message;
@@ -49,6 +47,9 @@ export default {
         }
       });
     }
+  },
+  components: {
+    swipe
   }
 };
 </script>
@@ -57,25 +58,7 @@ export default {
 body {
   background-color: #fff !important;
 }
-// 轮播图样式
-.mint-swipe {
-  height: 200px;
-  .mint-swipe-item {
-    &:nth-of-type(1) {
-      background-color: skyblue;
-    }
-    &:nth-of-type(2) {
-      background-color: deeppink;
-    }
-    &:nth-of-type(3) {
-      background-color: gold;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
+
 // 导航样式
 .mui-grid-view.mui-grid-9 {
   background-color: #fff;

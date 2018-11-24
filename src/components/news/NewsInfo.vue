@@ -2,6 +2,7 @@
   <div class="newsinfo-caontainer">
     <h2 class="title">{{ newInfo.title }}</h2>
     <p class="subtitle">
+      <!-- 全局时间过滤器 -->
       <span>发表时间：{{ newInfo.add_time | dateFormat}}</span>
       <span>点击： {{ newInfo.click }}次</span>
     </p>
@@ -10,7 +11,7 @@
     <!-- 内容 -->
     <div class="content" v-html="newInfo.content"></div>
 
-    <!-- 评论 -->
+    <!-- 评论组件 -->
     <comment :id="this.id"></comment>
   </div>
 </template>

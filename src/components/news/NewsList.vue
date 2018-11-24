@@ -5,6 +5,7 @@
 
       <li class="mui-table-view-cell mui-media" v-for="item in newsList" :key="item.id">
         <router-link :to="'/home/newsinfo/' + item.id">
+        <!-- scr记得绑定 -->
           <img class="mui-media-object mui-pull-left" :src="item.img_url">
           <div class="mui-media-body">
             <p>{{item.title}}</p>
@@ -35,7 +36,6 @@ export default {
       this.$http.get('http://www.lovegf.cn:8899/api/getnewslist').then( result => {
         if(result.body.status === 0) {
           this.newsList = result.body.message
-          console.log(result.body);
         } else {
           Toast('获取数据失败')
         }
