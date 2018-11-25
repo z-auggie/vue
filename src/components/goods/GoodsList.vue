@@ -48,7 +48,8 @@ export default {
     // 获取页面数据
     getList() {
       this.$http
-        .get("http://localhost:5000/api/getgoods?pageindex=" + this.pageIndex)
+        // .get("http://localhost:5000/api/getgoods?pageindex=" + this.pageIndex)
+        .get("http://www.lovegf.cn:8899/api/getgoods?pageindex=" + this.pageIndex)
         .then(result => {
           let { status, message } = result.body;
           if (status === 0) {

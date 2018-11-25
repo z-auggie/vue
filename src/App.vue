@@ -1,7 +1,11 @@
 <template>
   <div class="app-caontainer">
       <!-- 顶部 -->
-      <mt-header fixed title="Vue项目"></mt-header>
+      <mt-header fixed title="Vue项目">
+        <span slot="left">
+          <mt-button icon="back" v-show="flag" @click="back">返回</mt-button>
+        </span>
+      </mt-header>
       <!-- 内容 -->
       <transition>
         <router-view></router-view>      
@@ -20,7 +24,7 @@
         </router-link>
         <router-link class="mui-tab-item-zyl" to="/shopcar">
           <span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-            <span class="mui-badge" id="badge">0</span>
+            <span class="mui-badge" id="badge">{{ $store.getters.getNumber }}</span>
           </span>
           <span class="mui-tab-label">购物车</span>
         </router-link>
@@ -33,6 +37,28 @@
 </template>
 
 <script>
+export default {
+  data: () => ({
+    flag: false
+  }),
+  created() {
+    this.flag = this.$route.path === '/home' ?  false :  true
+  },
+  methods: {
+    back() {
+      this.$router.go(-1)
+    }
+  },
+  watch: {
+    "$route.path": function(newVal) {
+      if(newVal === '/home') {
+        this.flag = false
+      } else {
+        this.flag = true
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -52,7 +78,7 @@
 .v-leave-to {
   position: absolute;
   opacity: 0;
-  transform: translateX(-100%);  
+  transform: translateX(-100%);
 }
 .v-enter-active,
 .v-leave-active {
@@ -60,34 +86,34 @@
 }
 // 该类名，解决 tabbar 点击无法切换的问题
 .mui-bar-tab .mui-tab-item-zyl.mui-active {
-    color: #007aff;
+  color: #007aff;
 }
 
 .mui-bar-tab .mui-tab-item-zyl {
-    display: table-cell;
-    overflow: hidden;
-    width: 1%;
-    height: 50px;
-    text-align: center;
-    vertical-align: middle;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: #929292;
+  display: table-cell;
+  overflow: hidden;
+  width: 1%;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #929292;
 }
 
 .mui-bar-tab .mui-tab-item-zyl .mui-icon {
-    top: 3px;
-    width: 24px;
-    height: 24px;
-    padding-top: 0;
-    padding-bottom: 0;
+  top: 3px;
+  width: 24px;
+  height: 24px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
-.mui-bar-tab .mui-tab-item-zyl .mui-icon~.mui-tab-label {
-    font-size: 11px;
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.mui-bar-tab .mui-tab-item-zyl .mui-icon ~ .mui-tab-label {
+  font-size: 11px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
 

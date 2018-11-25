@@ -33,7 +33,7 @@
             <number @func="getCount" :max="GoodsInfo.stock_quantity"></number>
           </p>
           <mt-button type="primary" size="small">立即购买</mt-button>
-          <mt-button type="danger" size="small" @click="flag=!flag">加入购物车</mt-button>
+          <mt-button type="danger" size="small" @click="addToCar" >加入购物车</mt-button>
         </div>
       </div>
     </div>
@@ -60,90 +60,113 @@
 
 <script>
 // 轮播图
-import swipe from "../subcomponents/Lunbo.vue"
+import swipe from "../subcomponents/Lunbo.vue";
 // 数值框
-import number from "../subcomponents/GoodsNumber.vue"
+import number from "../subcomponents/GoodsNumber.vue";
 
 export default {
-  data(){
+  data() {
     return {
       LoopList: [],
       GoodsInfo: [],
       id: this.$route.params.id,
-      flag: false,    //小球默认隐藏
-      count: 1 //默认商品数量   
-    } 
+      flag: false, //小球默认隐藏
+      count: 1 //默认商品数量
+    };
   },
   created() {
-    this.getLoopList()
-    this.getGoodsInfo()
+    this.getLoopList();
+    this.getGoodsInfo();
   },
   methods: {
     // 获取轮播图图片
     getLoopList() {
-      this.$http.get('http://localhost:5000/api/getthumimages/' + this.id).then(result => {
-        let { status, message } = result.body
-        if(status === 0) {
-          message.forEach(item => {
-            item.img = item.src
-          });
-          this.LoopList = message
-        }
-      })
+      this.$http
+        // .get("http://localhost:5000/api/getthumimages/" + this.id)
+        .get("http://www.lovegf.cn:8899/api/getthumimages/" + this.id)
+        .then(result => {
+          let { status, message } = result.body;
+          if (status === 0) {
+            message.forEach(item => {
+              item.img = item.src;
+            });
+            this.LoopList = message;
+          }
+        });
     },
     // 获取商品数据
     getGoodsInfo() {
-      this.$http.get('http://localhost:5000/api/goods/getinfo/' + this.id).then( result => {
-        let { status, message } = result.body
-        if(status === 0) {
-          this.GoodsInfo = message
-        }
-      })
+      this.$http
+        // .get("http://localhost:5000/api/goods/getinfo/" + this.id)
+        .get("http://www.lovegf.cn:8899/api/goods/getinfo/" + this.id)
+        .then(result => {
+          console.log(result)
+          let { status, message } = result.body;
+          if (status === 0) {
+            this.GoodsInfo = message[0];
+          }
+        });
     },
     goDesc(id) {
       // vue-router编程式导航
-      this.$router.push({ name: 'goodsdesc', params: { id } })
+      this.$router.push({ name: "goodsdesc", params: { id } });
     },
     goComment(id) {
-      this.$router.push({ name: 'goodscomment', params: { id } })
+      this.$router.push({ name: "goodscomment", params: { id } });
     },
+    // 加入购物车
+    addToCar() {
+      // 加入购物车的小球动画显示
+      this.flag = !this.flag;
+
+      let goodsinfo = {
+        //{ id:商品的id， count：商品数量， price：商品的的单价， selected：false商品是否被选择 }
+        id: this.id,
+        count: this.count,
+        price: this.GoodsInfo.sell_price,
+        selected: true
+      }
+
+      this.$store.commit('addToCar', goodsinfo)
+    },
+    // 加入购物车的半场动画
     beforeEnter(el) {
-      el.style.transform = "translate(0, 0)"
-      el.style.opacity = 0
-      el.style.width = "80px"
-      el.style.height = "80px"
-      el.style.backgroundColor = "red"
+      el.style.transform = "translate(0, 0)";
+      el.style.opacity = 0;
+      el.style.width = "80px";
+      el.style.height = "80px";
+      el.style.backgroundColor = "red";
     },
-    enter(el,done) {
-      el.offsetWidth
+    enter(el, done) {
+      el.offsetWidth;
 
-      ballPosition = this.$refs.ball.getBoundingClientRect()  //获取小球的视窗位置
-      badgePosition = document.getElementById('badge').getBoundingClientRect()  //获取购物车徽标的视窗位置
+      ballPosition = this.$refs.ball.getBoundingClientRect(); //获取小球的视窗位置
+      badgePosition = document.getElementById("badge").getBoundingClientRect(); //获取购物车徽标的视窗位置
       // 徽标视窗位置减去小球视窗位置得到动态获得小球进入购物车动画
-      const yDist = badgePosition.top - ballPosition.top
-      const xDist = badgePosition.left - ballPosition.left
+      const yDist = badgePosition.top - ballPosition.top;
+      const xDist = badgePosition.left - ballPosition.left;
 
-      el.style.transform = `translate(${xDist}px,${yDist}px)`
-      el.style.opacity = .5
-      el.style.width = "15px"
-      el.style.height = "15px"
-      el.style.backgroundColor = "#ccc"
-      el.style.transition = "all .8s" 
-      done()
+      el.style.transform = `translate(${xDist}px,${yDist}px)`;
+      el.style.opacity = 0.5;
+      el.style.width = "15px";
+      el.style.height = "15px";
+      el.style.backgroundColor = "#ccc";
+      el.style.transition = "all .8s";
+      done();
     },
     afterEnter(el) {
-      this.flag = !this.flag
+      this.flag = !this.flag;
     },
     getCount(count) {
-      this.count = count
-      console.log('数量是' + count)
+      this.count = count;
+      console.log("数量是" + count);
     }
   },
   components: {
     swipe,
     number
   }
-}
+};
 </script>
 
 <style lang="less" scoped>

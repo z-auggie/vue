@@ -21,8 +21,8 @@ export default {
 <style lang="less" scoped>
 // 轮播图样式
 .mint-swipe {
-  height: 200px;
-  min-height: 200px;
+  height: 53.3vw;
+  min-height: 53.3vw;
   .mint-swipe-item {
     &:nth-of-type(1) {
       background-color: skyblue;

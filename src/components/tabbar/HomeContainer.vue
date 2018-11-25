@@ -63,6 +63,8 @@ body {
 .mui-grid-view.mui-grid-9 {
   background-color: #fff;
   .mui-table-view-cell {
+    width: 32vw;
+    height: 32vw;
     border: none;
   }
   img {
